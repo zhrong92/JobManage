@@ -1,0 +1,52 @@
+﻿/* 列表页面搜索条件表格 */
+.layui-list-search {
+    border: 1px solid #e6e6e6;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+    .layui-list-search > .layui-form > .layui-inline {
+        margin: 3px 0;
+    }
+
+    .layui-list-search > .layui-form .layui-input-inline {
+        width: 212px;
+    }
+
+    .layui-list-search .search-btn {
+        width: 50px;
+        float: right;
+    }
+
+.layui-list-tool {
+    border: 1px solid #e6e6e6;
+    padding: 10px 0 10px 10px;
+    background-color: #f2f2f2;
+    margin-bottom:10px;
+}
+
+    .layui-list-tool > span {
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .layui-list-tool > span > i {
+        font-size: 16px;
+        color: #393D49;
+    }
+
+    .layui-list-tool > span > a {
+        font-size: 14px;
+    }
+
+/* 链接按钮 - 普通 */
+.layui-btn-alink-normal {
+    color: #01AAED !important;
+    cursor: pointer;
+}
+
+/* 链接按钮 - 删除 */
+.layui-btn-alink-danger {
+    color: #FF5722 !important;
+    cursor: pointer;
+}
