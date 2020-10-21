@@ -23,9 +23,14 @@ namespace JobManage.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(p =>
+            {
+                p.JsonSerializerOptions.PropertyNamingPolicy = null;
+                p.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                p.JsonSerializerOptions.Converters.Add(new DateTimeNullConverter());
+            });
 
-            services.AddCore("mongodb://127.0.0.1:27017", "db_job");
+            services.AddCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

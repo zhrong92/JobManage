@@ -5,8 +5,10 @@ namespace JobManage.Core
 {
     public static class JobManageCoreServiceCollectionExtensions
     {
-        public static IServiceCollection AddCore(this IServiceCollection services, string connectionString, string databaseName)
+        public static IServiceCollection AddCore(this IServiceCollection services)
         {
+            string connectionString = "mongodb://127.0.0.1:27017";
+            string databaseName = "db_job";
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(databaseName);
             services.AddSingleton<IMongoDbContext, MongoDbContext>(factory =>

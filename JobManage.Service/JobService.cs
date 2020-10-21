@@ -61,22 +61,19 @@ namespace JobManage.Service
                 JobKey jobKey = new JobKey(name, group);
                 if (!await context.Scheduler.CheckExists(jobKey))
                 {
-                    Type type = await GetClass("");
-                    if (type != null)
-                    {
-                        IJobDetail jobDetail = JobBuilder.Create(type)
+                    IJobDetail jobDetail = JobBuilder.Create<BaseJob>()
                             .WithIdentity(jobKey)
+                            .UsingJobData("RequestUrl", job.RequestUrl)
                             .Build();
 
-                        ITrigger trigger = TriggerBuilder.Create()
-                            .WithIdentity(group, name)
-                            .StartNow()
-                            .WithCronSchedule(job.CronExpression)
-                            .Build();
+                    ITrigger trigger = TriggerBuilder.Create()
+                        .WithIdentity(group, name)
+                        .StartNow()
+                        .WithCronSchedule(job.CronExpression)
+                        .Build();
 
-                        await context.Scheduler.ScheduleJob(jobDetail, trigger);
-                        await _jobRepository.UpdateStatusAsync(job.Id, (int)JobStatusEnum.Running);
-                    }
+                    await context.Scheduler.ScheduleJob(jobDetail, trigger);
+                    await _jobRepository.UpdateStatusAsync(job.Id, (int)JobStatusEnum.Running);
                 }
             }
             catch (Exception ex)
@@ -186,25 +183,25 @@ namespace JobManage.Service
             }
         }
 
-        private async Task<Type> GetClass(string className)
-        {
-            try
-            {
-                string url = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/") + $"JobDllImport/GLJob.Manage.dll";
-                Assembly assembly = Assembly.LoadFrom(url);
-                Type type = assembly.GetType(className);
-                if (type == null)
-                {
-                    await _jobRunLogRepository.InsertAsync(new JobRunLog(JobHelper.BaseJobGroup, JobHelper.BaseJobName, 0, DateTime.Now, false, $"任务实例{className}获取失败"));
-                }
-                return type;
-            }
-            catch (Exception ex)
-            {
-                await _jobRunLogRepository.InsertAsync(new JobRunLog(JobHelper.BaseJobGroup, JobHelper.BaseJobName, 0, DateTime.Now, false, $"任务实例{className}获取失败：" + ex.StackTrace));
-                return null;
-            }
-        }
+        //private async Task<Type> GetClass(string className)
+        //{
+        //    try
+        //    {
+        //        string url = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/") + $"JobDllImport/GLJob.Manage.dll";
+        //        Assembly assembly = Assembly.LoadFrom(url);
+        //        Type type = assembly.GetType(className);
+        //        if (type == null)
+        //        {
+        //            await _jobRunLogRepository.InsertAsync(new JobRunLog(JobHelper.BaseJobGroup, JobHelper.BaseJobName, 0, DateTime.Now, false, $"任务实例{className}获取失败"));
+        //        }
+        //        return type;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _jobRunLogRepository.InsertAsync(new JobRunLog(JobHelper.BaseJobGroup, JobHelper.BaseJobName, 0, DateTime.Now, false, $"任务实例{className}获取失败：" + ex.StackTrace));
+        //        return null;
+        //    }
+        //}
 
     }
 }

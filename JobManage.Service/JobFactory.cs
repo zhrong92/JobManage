@@ -18,35 +18,10 @@ namespace JobManage.Service
 
         public virtual IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            try
-            {
-                IJobDetail jobDetail = bundle.JobDetail;
-                Console.Out.WriteLineAsync($"jobDetailCode：{jobDetail.GetHashCode()}");
-                Type jobType = typeof(TestJob);
-                Console.Out.WriteLineAsync($"jobTypeCode：{jobType.GetHashCode()}");
-                var temp = _serviceProvider.GetServices<IJob>().First();
-                Console.Out.WriteLineAsync($"NewJobCode：{temp.GetHashCode()}");
-                return temp;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            IJobDetail jobDetail = bundle.JobDetail;
+            Type jobType = jobDetail.JobType;
+            return _serviceProvider.GetService(jobType) as IJob;
         }
-
-        //public virtual IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
-        //{
-        //    try
-        //    {
-        //        IJobDetail jobDetail = bundle.JobDetail;
-        //        Type jobType = jobDetail.JobType;
-        //        return _serviceProvider.GetService(jobType) as IJob;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null;
-        //    }
-        //}
 
         public virtual void ReturnJob(IJob job)
         {

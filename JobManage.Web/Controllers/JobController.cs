@@ -22,7 +22,7 @@ namespace JobManage.Web.Controllers
         [HttpGet]
         public async Task<JsonResult> List(int PageIndex, int PageSize, string SearchValue)
         {
-            SearchValue = "";
+            SearchValue = string.IsNullOrWhiteSpace(SearchValue) ? "" : SearchValue;
             var task = _jobRepository.GetPagedListAsync(PageIndex, PageSize, SearchValue);
             var page = await task;
             return Result.Success(ApiStatusCode.succ, page.Datas, page.TotalCount);
@@ -31,7 +31,7 @@ namespace JobManage.Web.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            return PartialView("_add");
+            return PartialView("Add");
         }
 
         public async Task<JsonResult> Add(JobAddInput input)
@@ -52,14 +52,7 @@ namespace JobManage.Web.Controllers
         public async Task<JsonResult> UpdateStatus([FromForm]string id, int status)
         {
             bool succ = await _jobRepository.UpdateStatusAsync(id, status);
-            if (succ)
-            {
-                return Result.Success(ApiStatusCode.succ);
-            }
-            else
-            {
-                return Result.Success(ApiStatusCode.error);
-            }
+            return Result.Success(succ ? ApiStatusCode.succ : ApiStatusCode.error);
         }
     }
 }

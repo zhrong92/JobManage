@@ -17,20 +17,13 @@ namespace JobManage.Core
 
         public async Task<List<Job>> GetListAsync(Expression<Func<Job, bool>> exp = null)
         {
-            if (exp == null)
-            {
-                return await _jobRepository.GetListAsync();
-            }
-            else
-            {
-                return await _jobRepository.GetListAsync(exp);
-            }
+            return await _jobRepository.GetListAsync(exp);
         }
 
         public async Task<PageList<Job>> GetPagedListAsync(int pageIndex, int pageSize, string searchValue)
         {
-            var count = await _jobRepository.CountAsync();
-            var list = await _jobRepository.GetPagedListAsync((pageIndex - 1) * pageSize, pageSize);
+            var count = await _jobRepository.CountAsync(j => j.Description.Contains(searchValue));
+            var list = await _jobRepository.GetPagedListAsync(pageIndex, pageSize, j => j.Description.Contains(searchValue));
             var result = new PageList<Job>()
             {
                 TotalCount = count,

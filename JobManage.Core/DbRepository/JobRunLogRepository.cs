@@ -14,14 +14,16 @@ namespace JobManage.Core
             _repository = repository;
         }
 
-        public async Task<List<JobRunLog>> GetPagedListAsync(int skipCount, int returnCount, string searchValue, bool succ)
+        public async Task<PageList<JobRunLog>> GetPagedListAsync(int pageIndex, int pageSize, string searchValue)
         {
-            return await _repository.GetPagedListAsync(skipCount, returnCount, j => j.JobName.Contains(searchValue) && j.Succ == succ);
-        }
-
-        public async Task<int> CountAsync(string searchValue, bool succ)
-        {
-            return await _repository.CountAsync(j => j.JobName.Contains(searchValue) && j.Succ == succ);
+            var count = await _repository.CountAsync(j => j.JobName.Contains(searchValue));
+            var list = await _repository.GetPagedListAsync(pageIndex, pageSize, j => j.JobName.Contains(searchValue));
+            var result = new PageList<JobRunLog>()
+            {
+                TotalCount = count,
+                Datas = list
+            };
+            return result;
         }
 
         public async Task<JobRunLog> InsertAsync(JobRunLog log)

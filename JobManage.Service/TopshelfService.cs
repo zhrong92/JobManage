@@ -62,31 +62,14 @@ namespace JobManage.Service
         {
             IServiceCollection services = new ServiceCollection();
 
-            //services.AddHttpClient();
-            //services.AddGLHttp();
+            services.AddHttpClient();
 
-            services.AddCore("mongodb://127.0.0.1:27017", "db_job");
+            services.AddCore();
 
-            //services.AddScoped<JobRepository>();
-            //services.AddScoped<JobRunLogRepository>();
-            //services.AddScoped<JobFactory>();
-            //services.AddScoped<JobService>();
-            //services.AddScoped<JobListener>();
-
-            //services.AddSingleton<JobRepository>();
-            services.AddSingleton<JobFactory>();
-            services.AddSingleton<JobRunLogRepository>();
-            //services.AddSingleton<IJob,TestJob>();
-            //services.AddTransient<BaseJob>();
-
-            //注册业务Job
-            //var type = typeof(IJob);
-            //Assembly assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/") + $"JobDllImport/GLJob.Manage.dll");
-            //var implements = assembly.GetTypes().Where(t => t.IsClass && type.IsAssignableFrom(t));
-            //foreach (var item in implements)
-            //{
-            //    services.AddSingleton(item);
-            //}
+            services.AddTransient<JobFactory>();
+            services.AddTransient<JobService>();
+            services.AddTransient<JobListener>();
+            services.AddTransient<BaseJob>();
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             return serviceProvider;

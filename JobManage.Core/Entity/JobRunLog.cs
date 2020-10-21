@@ -22,6 +22,7 @@ namespace JobManage.Core
         public string JobGroup { get; set; }
         public string JobName { get; set; }
         public double RunTime { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartTime { get; set; }
         public bool Succ { get; set; }
         public string Exception { get; set; }

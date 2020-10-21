@@ -6,7 +6,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">关键字</label>
             <div class="layui-input-inline">
-                <input type="text" id="searchValue" placeholder="请输入分组 / 名称 / 描述" class="layui-input">
+                <input type="text" id="searchValue" placeholder="请输入描述" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
@@ -19,6 +19,7 @@
 <div>
     <table class="layui-table" id="tableId" lay-filter="tableFilter"></table>
 </div>
+
 <script type="text/html" id="tableBar">
     {{#  if(d.Status == '2'){ }}
     <a class="layui-btn layui-btn-xs" lay-event="pause">暂停</a>
@@ -30,6 +31,24 @@
 
     {{#  } else {}}
     后台处理中
+    {{#  } }}
+</script>
+
+<script type="text/html" id="statusBar">
+    {{#  if(d.Status == '1'){ }}
+    待执行
+    {{#  } else if(d.Status == '2') { }}
+    执行中
+    {{#  } else if(d.Status == '3') { }}
+    待暂停
+    {{#  } else if(d.Status == '4') { }}
+    已暂停
+    {{#  } else if(d.Status == '5') { }}
+    待恢复
+    {{#  } else if(d.Status == '6') { }}
+    待删除
+    {{#  } else if(d.Status == '7') { }}
+    已删除
     {{#  } }}
 </script>
 
@@ -52,7 +71,7 @@
                     { field: 'CronExpression', title: '执行规则', align: 'center', width: 120 },
                     { field: 'Description', title: '描述', align: 'left', width: 300 },
                     { field: 'RequestUrl', title: '请求Url', align: 'left', width: 200 },
-                    { field: 'StatusText', title: '当前状态', align: 'center', width: 100, },
+                    { title: '当前状态', align: 'center', width: 100, templet: '#statusBar' },
                     { field: 'NextOpTime', title: '下次执行时间', align: 'center', width: 180 },
                     { field: 'LastOpTime', title: '最后执行时间', align: 'center', width: 180 },
                     { field: 'CreateTime', title: '创建时间', align: 'center', width: 180 },

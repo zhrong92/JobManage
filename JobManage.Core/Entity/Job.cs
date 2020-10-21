@@ -16,8 +16,11 @@ namespace JobManage.Core
         public int Status { get; set; }
         public string CronExpression { get; set; }
         public string Description { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreateTime { get; set; } = DateTime.Now;
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? NextOpTime { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? LastOpTime { get; set; }
         public string RequestUrl { get; set; }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace JobManage.Service
+namespace JobManage.Core
 {
     public class JobHelper
     {
